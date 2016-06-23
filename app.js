@@ -26,6 +26,14 @@ let dishes = require('./routes/dishRouter'),
 
 var app = express();
 
+// Secure traffic only, redirect all the request to the secure server
+app.all('*', function(req, res, next){
+    if(req.secure){
+        return next();
+    }
+    res.redirect('https://'+req.hostname+':'+app.get('secPort')+req.url);
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
