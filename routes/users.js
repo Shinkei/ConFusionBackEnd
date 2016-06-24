@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-let passport = require('passport'),
-    User = require('../models/user'),
-    Verify = require('./verify'),
-    bodyParser = require('body-parser');
+const passport = require('passport'),
+      User = require('../models/user'),
+      Verify = require('./verify'),
+      bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 
@@ -68,5 +68,33 @@ router.get('/logout', function(req, res){
     res.status(200).json({status:'Bye'});
 });
 
+router.get('/facebook', passport.authenticate('facebook'), function(req, res){});
+
+router.get('/facebook/callback', function(req, res, next){
+    passport.authenticate('facebook', function(err, user, info){
+        if(err){
+            return next(err);
+        }
+        if(!user){
+            return res.status(401).json({
+                err:info
+            });
+        }
+        req.logIn(user, function(err){
+            if(err){
+                return rs.status(500).json({
+                    err:'Could not log in user'
+                });
+            }
+            let token = Verify.getToken(user);
+
+            res.status(200).json({
+                status:'login Successful',
+                success:true,
+                token:token
+            });
+        });
+    })(req, res, next);
+});
 
 module.exports = router;
