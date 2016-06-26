@@ -21,7 +21,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 let dishes = require('./routes/dishRouter'),
     promo = require('./routes/promoRouter'),
-    leadership = require('./routes/leaderRouter');
+    leadership = require('./routes/leaderRouter'),
+    favorite = require('./routes/favoriteRouter');
 
 var app = express();
 
@@ -54,6 +55,7 @@ app.use('/users', users);
 app.use('/dishes', dishes);
 app.use('/promotions', promo);
 app.use('/leadership', leadership);
+app.use('/favorites', favorite);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
