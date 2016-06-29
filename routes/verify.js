@@ -40,7 +40,7 @@ module.exports.verifyOrdinaryUser = function(req, res, next){
 
 module.exports.verifyAdmin = function(req, res, next){
     console.log(req.decoded);
-    if (req.decoded && req.decoded._doc.admin === true) {
+    if (req.decoded && req.decoded.admin === true) {
         console.log('Is an admin');
         next();
     }

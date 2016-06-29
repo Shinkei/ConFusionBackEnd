@@ -23,7 +23,11 @@ let leadershipSchema = new Schema({
     description:{
         type:String,
         required:true
-    }
+    },
+    featured:{
+        type:Boolean,
+        default:false
+    },
 },{
     timestamps:true // this atribute gives the object two new values, created at and updated at
 });

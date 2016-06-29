@@ -51,6 +51,10 @@ let dishSchema = new Schema({
         type:String,
         required:true
     },
+    featured:{
+        type:Boolean,
+        default:false
+    },
     comments:[commentsSchema]
 },{
     timestamps:true // this atribute gives the object two new values, created at and updated at

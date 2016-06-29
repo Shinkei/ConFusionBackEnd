@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 router.route('/').
     get(Verify.verifyOrdinaryUser ,Verify.verifyAdmin, function(req, res, next) {
         User.find({}, function(err, users){
-            if(err) throw err;
+            if(err) next(err);
             res.json(users);
         });
     });
@@ -52,7 +52,7 @@ router.post('/login', function(req, res, next){
             }
             console.log('User in users: ', user);
 
-            let token = Verify.getToken(user);
+            let token = Verify.getToken({"username":user.username,"_id":user._id,"admin":user.admin});
 
             res.status(200).json({
                 status:'login Successful',
@@ -86,7 +86,7 @@ router.get('/facebook/callback', function(req, res, next){
                     err:'Could not log in user'
                 });
             }
-            let token = Verify.getToken(user);
+            let token = Verify.getToken({"username":user.username,"_id":user._id,"admin":user.admin});
 
             res.status(200).json({
                 status:'login Successful',

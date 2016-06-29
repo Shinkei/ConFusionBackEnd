@@ -15,22 +15,22 @@ favoriteRouter.route('/')
             .populate('postedBy')
             .populate('dishes')
             .exec(function(err, favorites){
-            if(err) throw err;
+            if(err) next(err);
             res.json(favorites);
         });
     })
     .post(function(req, res, next){
         console.log('Will add the favorite: ' + req.body._id);
-        Favorites.findOne({"postedBy": req.decoded._doc._id},function(err, fav){
-            if(err) throw err;
+        Favorites.findOne({"postedBy": req.decoded._id},function(err, fav){
+            if(err) next(err);
             if(fav.length === 0){
                 console.log('perro');
                 fav2 = {
-                    postedBy:req.decoded._doc._id,
+                    postedBy:req.decoded._id,
                     dishes:[req.body._id]
                 };
                 Favorites.create(fav2, function(err, favorite){
-                    if(err) throw err;
+                    if(err) next(err);
                     console.log('Favorite created');
                     res.json(favorite);
                 });
@@ -38,7 +38,7 @@ favoriteRouter.route('/')
             else{
                 fav.dishes.push(req.body._id);
                 fav.save(function(err, fav){
-                    if(err) throw err;
+                    if(err) next(err);
                     console.log('favorite added');
                     res.json(fav);
                 });
@@ -48,7 +48,7 @@ favoriteRouter.route('/')
     .delete(function(req, res, next){
         console.log('Delete all');
         Favorites.remove({}, function(err, resp){
-            if(err) throw err;
+            if(err) next(err);
             res.json(resp);
         });
     });
@@ -58,8 +58,8 @@ favoriteRouter.route('/:favoriteId')
     .delete(function(req, res, next){
 
         console.log('Will delete the favorite: ' + req.body._id);
-        Favorites.findOne({"postedBy": req.decoded._doc._id},function(err, fav){
-            if(err) throw err;
+        Favorites.findOne({"postedBy": req.decoded._id},function(err, fav){
+            if(err) next(err);
             console.error("este el el fav: ",fav);
             if(fav.length === 0){
                 let err = new Error('There is no favorite');
@@ -77,7 +77,7 @@ favoriteRouter.route('/:favoriteId')
                 if(pos){
                     fav.dishes.splice(pos, 1);
                     fav.save(function(err, fav){
-                        if(err) throw err;
+                        if(err) next(err);
                         console.log('favorite added');
                         res.json(fav);
                     });
